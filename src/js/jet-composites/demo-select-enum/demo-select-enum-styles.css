@@ -1,0 +1,8 @@
+demo-select-enum:not(.oj-complete){
+  visibility: hidden;
+}
+
+demo-select-enum{
+	min-height: 50px;
+	width: 50px;
+}

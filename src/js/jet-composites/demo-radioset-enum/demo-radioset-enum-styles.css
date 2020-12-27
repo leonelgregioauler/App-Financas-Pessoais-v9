@@ -1,0 +1,8 @@
+demo-radioset-enum:not(.oj-complete){
+  visibility: hidden;
+}
+
+demo-radioset-enum{
+	min-height: 50px;
+	width: 50px;
+}

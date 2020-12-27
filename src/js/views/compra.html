@@ -1,0 +1,150 @@
+<style>
+
+  .oj-button-label {
+    color: #ffffff;
+  }
+
+  .descricao-compra {
+    font-size: larger;
+    font-weight: bold;
+  }
+
+  .data-compra,
+  .valor-compra {
+    text-align: right;
+  }
+
+  .valor-compra {
+    font-size: x-large;
+    font-weight: bold;
+    color: green;
+  }
+
+  oj-form-layout {
+    max-width: 100% !important;
+  }
+
+  oj-list-view { 
+    margin-bottom: 150px;
+  }
+
+</style>
+<!--
+ Copyright (c) 2014, 2019, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+ -->
+<div class="oj-hybrid-applayout-page">
+  <div class="oj-applayout-fixed-top">
+    <!--
+      ** Oracle JET V8.0.0 hybrid mobile application header pattern.
+      ** Please see the Oracle JET Cookbook App Shell: Hybrid Mobile demos for
+      ** more information on how to use this pattern.
+    -->
+    <header role="banner" class="oj-hybrid-applayout-header">
+      <oj-module config="[[headerConfig]]"></oj-module>
+    </header>
+  </div>
+  <!-- This is where your main page content will be loaded -->
+  <div class="oj-applayout-content">
+    <div role="main" class="oj-hybrid-applayout-content">
+      <div class="oj-hybrid-padding">
+        <h1></h1>
+        <div>
+          <oj-form-layout max-columns="1" direction="row">
+            <oj-bind-if test="[[exibe]]">
+              <oj-select-single
+              id="listaEstabelecimento"
+              label-hint="Selecione o estabelecimento"
+              data="[[dataProviderEstabelecimento]]"
+              value="{{estabelecimento}}"  
+              value-item="{{valorItem}}"
+              on-value-item-changed="[[atualizaEstabelecimentoSelecionado]]"
+              >
+            </oj-select-single>
+            </oj-bind-if>
+            <oj-input-text 
+              id="descricao-compra" 
+              value={{descricaoCompra}} 
+              label-hint="Informe detalhes da compra"
+              on-raw-value-changed="[[handleRawValueChanged]]"
+              >
+            </oj-input-text>
+            <oj-input-date 
+              id="data-compra" 
+              value="{{dataCompra}}" 
+              label-hint="Informe a data da compra"
+              on-raw-value-changed="[[handleRawValueChanged]]"
+              >
+            </oj-input-date>
+            <oj-input-text 
+              id="valor-compra" 
+              value="{{valorCompra}}" 
+              converter="[[conversor]]"
+              label-hint="Informe o valor gasto"
+              placeholder="Informe o valor gasto"
+              on-raw-value-changed="[[handleRawValueChanged]]"
+              >
+            </oj-input-text>
+            <oj-button 
+              id="addButton" 
+              style="width: 40%; float: right; background-color: green; border-radius: 5px;"
+              class="oj-button-lg" 
+              on-oj-action="[[addItem]]" 
+              disabled="[[isTextAndSelecionFilled]]"
+              >Adicionar
+            </oj-button>
+          </oj-form-layout>
+        </div>
+
+        <oj-bind-if test="[[exibe]]">
+          <oj-list-view 
+            id="listview" 
+            selection-mode="single" 
+            data="[[dataProviderCompra]]"
+            selected="{{selectedItems}}"
+            on-current-item-changed="[[handleCurrentItemChanged]]"
+            >
+            <template slot="itemTemplate" data-oj-as="item">
+              <li>
+                <oj-list-item-layout>
+                  <span class="oj-typography-body-md oj-text-color-primary">
+                    <div class="descricao-compra">
+                      <oj-bind-text value="[[item.data.descricaoCompra]]"></oj-bind-text>       
+                    </div>
+                    <div class="estabelecimento">
+                      <oj-bind-text value="[[item.data.nomeEstabelecimento]]"></oj-bind-text>
+                    </div>
+                    <div class="data-compra">
+                      <oj-bind-text value="[[dateShortConverter.format(item.data.dataCompra)]]"></oj-bind-text> 
+                    </div>
+                    <div class="valor-compra">R$
+                      <oj-bind-text value="[[conversor.format(item.data.valorCompra)]]"></oj-bind-text>
+                    </div>
+                  </span>
+                </oj-list-item-layout>
+              </li>
+            </template>
+          </oj-list-view>
+        </oj-bind-if>
+      </div>
+      <footer style="position: absolute; bottom: 20px; width: 100%">
+        <oj-button 
+          id="updateButton" 
+          style="width: 92%; margin: 0% 4% 2% 4%; background-color: rgb(240, 177, 60); border-radius: 5px;" 
+          class="oj-button-lg" 
+          on-oj-action="[[updateSelected]]" 
+          disabled="[[isTextOrSelectionEmpty]]"
+          >Atualizar
+        </oj-button>
+        <oj-button 
+          id="removeButton" 
+          style="width: 92%; margin: 0% 4% 2% 4%; background-color: #C80000; border-radius: 5px;" 
+          class="oj-button-lg" 
+          on-oj-action="[[removeSelected]]" 
+          disabled="[[isSelectionEmpty]]"
+          >Excluir
+        </oj-button>
+      </footer>
+    </div>
+  </div>
+</div>

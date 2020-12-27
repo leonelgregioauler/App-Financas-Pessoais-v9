@@ -1,0 +1,106 @@
+<style>
+
+  oj-form-layout {
+    height:0px;
+  }
+
+</style>
+
+<!--
+ Copyright (c) 2014, 2020, Oracle and/or its affiliates.
+ Licensed under The Universal Permissive License (UPL), Version 1.0
+ as shown at https://oss.oracle.com/licenses/upl/
+ -->
+<div class="oj-hybrid-applayout-page">
+  <div class="oj-applayout-fixed-top">
+      <!--
+       ** Oracle JET V9.1.0 hybrid mobile application header pattern.
+       ** Please see the Oracle JET Cookbook App Shell: Hybrid Mobile demos for
+       ** more information on how to use this pattern.
+    -->
+    <header role="banner" class="oj-hybrid-applayout-header">
+      <oj-module config="[[headerConfig]]"></oj-module>
+    </header>
+  </div>
+  <!-- This is where your main page content will be loaded -->
+  <div class="oj-applayout-content">
+    <div role="main" class="oj-hybrid-applayout-content">
+      <div class="oj-hybrid-padding">
+        <h1></h1>
+        <div>
+          Dados são apenas para demonstração.
+        </div>
+
+        <div id='chart-container'>
+          <oj-form-layout
+            aria-controls="bubbleChart barChart">
+            <demo-radioset-enum 
+              id="radioButtonset" 
+              label-hint="Label"
+              direction="row"
+              value="{{selectionValue}}"
+              enum-values='["none", "single", "multiple"]'>
+            </demo-radioset-enum>
+          </oj-form-layout>
+      
+          <div class="oj-flex">
+            <div class="oj-flex-item">
+              <oj-chart id="bubbleChart"
+                coordinate-system="polar"
+                type="bubble"
+                polar-grid-shape="circle"
+                data="[[bubbleDataProvider]]" 
+                animation-on-display="auto"
+                animation-on-data-change="auto"
+                selection-mode="[[selectionValue]]"
+                selection="{{selectedItemsValueBubble}}">
+      
+                <template slot="itemTemplate" data-oj-as="item">
+                  <oj-chart-item 
+                      x='[[item.data.x]]'
+                      y='[[item.data.y]]'
+                      z='[[item.data.z]]'
+                      group-id="[[ [item.data.group] ]]"
+                      series-id="[[item.data.series]]">
+                  </oj-chart-item>
+                </template>
+              </oj-chart>
+              <div class="oj-sm-padding-1x">
+                <div class="oj-typography-heading-xs oj-sm-margin-2x-vertical">Selection</div>
+                <span><oj-bind-dom config="[[{view: selectionInfo()}]]"></oj-bind-dom></span>
+              </div>
+            </div>
+            <div class="oj-flex-item">
+              <oj-chart 
+                id="barChart"
+                coordinate-system="polar"
+                type="bar"
+                stack="on"
+                polar-grid-shape="circle"
+                data="[[barDataProvider]]" 
+                animation-on-display="auto"
+                animation-on-data-change="auto"
+                selection-mode="[[selectionValue]]"
+                selection="{{selectedItemsValueBar}}">
+      
+                <template slot="itemTemplate" data-oj-as="item">
+                  <oj-chart-item 
+                      value="[[item.data.value]]"
+                      group-id="[[ [item.data.group] ]]"
+                      series-id="[[item.data.series]]">
+                  </oj-chart-item>
+                </template>
+              </oj-chart>
+              <div class="oj-sm-padding-1x">
+                <div class="oj-typography-heading-xs oj-sm-margin-2x-vertical">Selection</div>
+                <span><oj-bind-dom config="[[{view: selectionInfo2()}]]"></oj-bind-dom></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
